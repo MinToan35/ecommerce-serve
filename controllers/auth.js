@@ -2,7 +2,7 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const userCtrl = {
+const authCtrl = {
   register: async (req, res) => {
     const { email, username, password } = req.body;
 
@@ -34,8 +34,7 @@ const userCtrl = {
       await newUser.save();
       res.json({ msg: "User registered successfully" });
     } catch (error) {
-      console.log(error.message);
-      res.status(500).json("Server error");
+      return res.status(500).json({ msg: error.message });
     }
   },
 
@@ -90,10 +89,48 @@ const userCtrl = {
         accessToken,
       });
     } catch (error) {
-      console.log(error);
-      res.status(500).json("Server error");
+      return res.status(500).json({ msg: error.message });
+    }
+  },
+
+  logout: async (req, res) => {
+    try {
+      res.clearCookie("refreshToken", { path: "/api_1.0/users/refresh_token" });
+      return res.json({ msg: "Logged out!" });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
+
+  generateAccessToken: async (req, res) => {
+    try {
+      const rf_token = req.cookies.refreshtoken;
+      if (!rf_token) return res.status(400).json({ msg: "Please login now." });
+
+      jwt.verify(rf_token, process.env.REFRESH_SECRET, async (err, result) => {
+        if (err) return res.status(400).json({ msg: "Please login now." });
+
+        const user = await User.findById(result.id).select("-password");
+
+        if (!user) return res.status(400).json({ msg: "This does not exist." });
+
+        const access_token = jwt.sign(
+          { id: user._id },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "1h",
+          }
+        );
+
+        res.json({
+          access_token,
+          user,
+        });
+      });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
     }
   },
 };
 
-module.exports = userCtrl;
+module.exports = authCtrl;

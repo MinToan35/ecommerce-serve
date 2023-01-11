@@ -1,4 +1,4 @@
-POST http://localhost:5000/api_1.0/users/register 
+POST http://localhost:5000/api_1.0/auth/register 
 Content-Type: application/json
 
 {
@@ -8,10 +8,13 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:5000/api_1.0/users/login
+POST http://localhost:5000/api_1.0/auth/login
 Content-Type: application/json
 
 {
     "email":"a@gmail.com",
     "password":"123456"
 }
+
+###
+POST http://localhost:5000/api_1.0/auth/logout
