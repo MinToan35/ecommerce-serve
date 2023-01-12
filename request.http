@@ -22,4 +22,15 @@ POST http://localhost:5000/api_1.0/auth/logout
 ###
 GET http://localhost:5000/api_1.0/user
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmVhOGRmZTA1NzkwYjc0NGVmYWY3MiIsImlhdCI6MTY3MzQ5Mjg0NiwiZXhwIjoxNjczNDk2NDQ2fQ.fdG-U1uq7gQmDHGQKrfI6rMcva-xDwBpJVo4jls_wbI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmY2NjI3ODViNzgyNDJjNGE4NzY3YiIsImlhdCI6MTY3MzQ5MzA1OSwiZXhwIjoxNjczNDk2NjU5fQ.7_aF_eclDZCywHsCDD2S2AabXixUIazrkl40PoTNrOc
+
+
+###
+PUT http://localhost:5000/api_1.0/user
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmVhOGRmZTA1NzkwYjc0NGVmYWY3MiIsImlhdCI6MTY3MzQ5NTExNSwiZXhwIjoxNjczNDk4NzE1fQ.Oub1PxrrFOwSrUJB7QQMRIO7oPTgVOxmmQiYeA5kjuE
+
+{
+    "gender":"female"
+}
+

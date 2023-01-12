@@ -22,6 +22,38 @@ const userCtrl = {
       return res.status(500).json({ msg: error.message });
     }
   },
+
+  updateUser: async (req, res) => {
+    try {
+      const { username, avatar, mobile, address, gender } = req.body;
+
+      await User.findOneAndUpdate(
+        { _id: req.user._id },
+        {
+          username,
+          avatar,
+          mobile,
+          address,
+          gender,
+        }
+      );
+
+      res.json({ msg: "Update Success!" });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
+
+  deleteUser: async (req, res) => {
+    try {
+      const { id } = req.params;
+      if (!id) return "Missed Information";
+      await User.findByIdAndDelete(id);
+      res.json({ msg: "Delete Success!" });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
 };
 
 module.exports = userCtrl;
