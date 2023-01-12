@@ -66,6 +66,15 @@ const authCtrl = {
       const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "1h",
       });
+
+      const refreshTokenIndex = refreshTokens.findIndex(
+        (token) => jwt.verify(token, process.env.REFRESH_SECRET).id === user.id
+      );
+      if (refreshTokenIndex !== -1) {
+        // Remove the existing refresh token
+        refreshTokens.splice(refreshTokenIndex, 1);
+      }
+
       //create and sign refresh token
       const refreshToken = jwt.sign(
         { id: user._id },
@@ -75,13 +84,7 @@ const authCtrl = {
         }
       );
 
-      const refreshTokenIndex = refresh_tokens.findIndex(
-        (token) => jwt.verify(token, process.env.REFRESH_SECRET).id === user._id
-      );
-      if (refreshTokenIndex !== -1) {
-        // Remove the existing refresh token
-        refresh_tokens.splice(refreshTokenIndex, 1);
-      } else refreshTokens.push(refreshToken);
+      refreshTokens.push(refreshToken);
 
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
