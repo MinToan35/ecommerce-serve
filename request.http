@@ -2,8 +2,8 @@ POST http://localhost:5000/api_1.0/auth/register
 Content-Type: application/json
 
 {
-    "email":"z@gmail.com",
-    "username":"z",
+    "email":"a@gmail.com",
+    "username":"a",
     "password":"123456"
 }
 
@@ -18,6 +18,19 @@ Content-Type: application/json
 
 ###
 POST http://localhost:5000/api_1.0/auth/logout
+Content-Type: application/json
+
+{
+    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmY2NjI3ODViNzgyNDJjNGE4NzY3YiIsImlhdCI6MTY3MzQ5ODcyMCwiZXhwIjoxNjczNTA5NTIwfQ.HjslKzdRLgJIzDbNN4h9D2Tzf5YGf2E6b02s10cQudc"
+}
+
+###
+POST http://localhost:5000/api_1.0/auth/refresh_token
+Content-Type: application/json
+
+{
+    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmY2NjI3ODViNzgyNDJjNGE4NzY3YiIsImlhdCI6MTY3MzQ5ODcyMCwiZXhwIjoxNjczNTA5NTIwfQ.HjslKzdRLgJIzDbNN4h9D2Tzf5YGf2E6b02s10cQudc"
+}
 
 ###
 GET http://localhost:5000/api_1.0/user
@@ -34,3 +47,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmVhOGRmZ
     "gender":"female"
 }
 
+###
+DELETE http://localhost:5000/api_1.0/user/63bea8dfe05790b744efaf72
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmY2NjI3ODViNzgyNDJjNGE4NzY3YiIsImlhdCI6MTY3MzQ5MzA1OSwiZXhwIjoxNjczNDk2NjU5fQ.7_aF_eclDZCywHsCDD2S2AabXixUIazrkl40PoTNrOc

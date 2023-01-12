@@ -2,6 +2,8 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+let refreshTokens = [];
+
 const authCtrl = {
   register: async (req, res) => {
     const { email, username, password } = req.body;
@@ -45,25 +47,21 @@ const authCtrl = {
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
-
       // check if request body contains email, username and password
       if (!email || !password)
         return res
           .status(400)
           .json({ error: "Email, and password are required" });
-
       // Check the email is exist
       const user = await User.findOne({ email });
       if (!user) {
         return res.status(401).json({ error: "Invalid email or password" });
       }
-
       //Check password
       const isMatch = await bcrypt.compare(req.body.password, user.password);
       if (!isMatch) {
         return res.status(401).json({ error: "Invalid email or password" });
       }
-
       //create and sign request token
       const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "1h",
@@ -73,17 +71,18 @@ const authCtrl = {
         { id: user._id },
         process.env.REFRESH_SECRET,
         {
-          expiresIn: "33",
+          expiresIn: "3h",
         }
       );
-
+      refreshTokens.push(refreshToken);
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         maxAge: 1 * 3 * 60 * 60 * 1000,
         path: "/api_1.0/users/refresh_token",
       });
-
       //return the request token and access token in the response
+      console.log(refreshTokens);
+
       res.json({
         msg: "Register Success!",
         user: {
@@ -99,7 +98,14 @@ const authCtrl = {
 
   logout: async (req, res) => {
     try {
+      refreshTokens = refreshTokens.filter(
+        (token) => token !== req.cookies.refreshToken
+      );
+
+      console.log(refreshTokens);
+
       res.clearCookie("refreshToken", { path: "/api_1.0/users/refresh_token" });
+
       return res.json({ msg: "Logged out!" });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
@@ -108,16 +114,17 @@ const authCtrl = {
 
   generateAccessToken: async (req, res) => {
     try {
-      const rf_token = req.cookies.refreshtoken;
+      const rf_token = req.cookies.refreshToken;
+
       if (!rf_token) return res.status(400).json({ msg: "Please login now." });
-
+      //check refreshTokens isvalid
+      if (!refreshTokens.includes(rf_token)) {
+        return res.status(403).json("Refresh token is not valid");
+      }
       jwt.verify(rf_token, process.env.REFRESH_SECRET, async (err, result) => {
-        if (err) return res.status(400).json({ msg: "Please login now." });
-
+        if (err) return res.status(400).json({ msg: "Please login now2." });
         const user = await User.findById(result.id).select("-password");
-
         if (!user) return res.status(400).json({ msg: "This does not exist." });
-
         const access_token = jwt.sign(
           { id: user._id },
           process.env.JWT_SECRET,
@@ -125,6 +132,8 @@ const authCtrl = {
             expiresIn: "1h",
           }
         );
+
+        console.log(refreshTokens);
 
         res.json({
           access_token,
