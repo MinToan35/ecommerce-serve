@@ -74,7 +74,15 @@ const authCtrl = {
           expiresIn: "3h",
         }
       );
-      refreshTokens.push(refreshToken);
+
+      const refreshTokenIndex = refresh_tokens.findIndex(
+        (token) => jwt.verify(token, process.env.REFRESH_SECRET).id === user._id
+      );
+      if (refreshTokenIndex !== -1) {
+        // Remove the existing refresh token
+        refresh_tokens.splice(refreshTokenIndex, 1);
+      } else refreshTokens.push(refreshToken);
+
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         maxAge: 1 * 3 * 60 * 60 * 1000,
@@ -101,8 +109,6 @@ const authCtrl = {
       refreshTokens = refreshTokens.filter(
         (token) => token !== req.cookies.refreshToken
       );
-
-      console.log(refreshTokens);
 
       res.clearCookie("refreshToken", { path: "/api_1.0/users/refresh_token" });
 
