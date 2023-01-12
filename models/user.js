@@ -19,6 +19,23 @@ const userSchema = new Schema({
     type: String,
     default: "user",
   },
+  avatar: {
+    type: String,
+    default:
+      "https://res.cloudinary.com/mintoan/image/upload/v1669965198/online-shop/avatar_cugq40_bevhej.png",
+  },
+  mobile: {
+    type: String,
+    default: "",
+  },
+  address: {
+    type: String,
+    default: "",
+  },
+  gender: {
+    type: String,
+    default: "male",
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);
