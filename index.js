@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 //import routes
-const authRouter = require("./routes/auth");
+const authRouter = require("./routes/authRoute");
+const userRouter = require("./routes/userRoute");
 
 require("dotenv").config();
 
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 //use the imported routes
 app.use("/api_1.0/auth", authRouter);
+app.use("/api_1.0/user", userRouter);
 
 const connectDB = async () => {
   try {
