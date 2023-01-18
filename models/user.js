@@ -37,6 +37,10 @@ const userSchema = new Schema(
       type: String,
       default: "male",
     },
+    status: {
+      type: String,
+      default: "active",
+    },
   },
   {
     timestamps: true,

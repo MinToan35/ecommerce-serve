@@ -2,8 +2,8 @@ POST http://localhost:5000/api_1.0/auth/register
 Content-Type: application/json
 
 {
-    "email":"a@gmail.com",
-    "username":"a",
+    "email":"m@gmail.com",
+    "username":"m",
     "password":"123456"
 }
 
@@ -51,3 +51,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmVhOGRmZ
 DELETE http://localhost:5000/api_1.0/user/63bea8dfe05790b744efaf72
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYmY2NjI3ODViNzgyNDJjNGE4NzY3YiIsImlhdCI6MTY3MzQ5MzA1OSwiZXhwIjoxNjczNDk2NjU5fQ.7_aF_eclDZCywHsCDD2S2AabXixUIazrkl40PoTNrOc
+
+
+###
+GET http://localhost:5000/api_1.0/banner

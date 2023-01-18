@@ -14,8 +14,8 @@ const auth = async (req, res, next) => {
       return res.status(400).json({ msg: "Invalid Authentication." });
 
     const user = await User.findOne({ _id: decoded.id });
-
     req.user = user;
+
     next();
   } catch (error) {
     return res.status(500).json({ msg: error.message });

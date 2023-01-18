@@ -12,12 +12,16 @@ const userCtrl = {
       const parsedLimit = parseInt(limit, 10) || defaultLimit;
 
       // Find all the users in the database
-      const users = await User.find()
+      const users = await User.find({ role: "user" })
         .select("-password")
         .skip((parsedPage - 1) * parsedLimit)
         .limit(parsedLimit);
+
       // Return the found users
-      res.json(users);
+      res.json({
+        msg: "Get users success",
+        users,
+      });
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
