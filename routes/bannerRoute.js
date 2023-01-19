@@ -6,3 +6,4 @@ router.post("/", checkAdmin, bannerCtrl.createBanner);
 router.get("/", auth, bannerCtrl.getBanner);
 router.delete("/:id", checkAdmin, bannerCtrl.deleteBanner);
 module.exports = router;
+router.put("/:id", checkAdmin, bannerCtrl.updateBanner);

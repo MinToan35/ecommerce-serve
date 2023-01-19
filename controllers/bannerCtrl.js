@@ -56,6 +56,25 @@ const bannerCtrl = {
       return res.status(500).json({ msg: error.message });
     }
   },
+
+  updateBanner: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { image, imageMobile, name, isShow } = req.body;
+      await Banner.findByIdAndUpdate(id, {
+        image,
+        imageMobile,
+        name,
+        user: req.user._id,
+        isShow,
+      });
+      res.json({
+        msg: "Updated Success",
+      });
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  },
 };
 
 module.exports = bannerCtrl;
